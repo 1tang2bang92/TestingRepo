@@ -1,0 +1,8 @@
+# front
+yarn --cwd "./react" start #react
+
+#back
+cd rocket
+cargo watch -x "run"
+
+#db
