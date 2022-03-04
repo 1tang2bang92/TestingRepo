@@ -2,10 +2,22 @@
 name = "rust"
 version = "0.1.0"
 authors = ["1tang2bang92 <shpark0906@naver.com>"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rocket = "0.4.10"
-sqlite = "0.26.0"
+log4rs = "1.0.0"
+chrono = "0.4"
+ring = "0.16.20"
+data-encoding = "2.3.2"
+rocket = { version = "0.5.0-rc.1", features = ["json"]}
+sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "sqlite" ] }
+serde = { version= "1.0.126", features = ["derive"] }
+serde_json = "1.0.59"
+tokio = { version = "1.17.0", features = ["full"] }
+
+[dependencies.rocket_contrib]
+version = "0.4.10"
+default-features = false
+features = ["json"]

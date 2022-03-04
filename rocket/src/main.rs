@@ -1,13 +1,34 @@
-#![feature(proc_macro_hygiene, decl_macro)]
+#[cfg(test)]
+mod tests;
 
 #[macro_use]
 extern crate rocket;
 
+use sqlx::sqlite::SqlitePool;
+
+mod controller;
+mod database;
+mod model;
+
 #[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+async fn index(/* conn: State<DbConn> */) -> &'static str {
+    "Hello, world"
 }
 
-fn main() {
-    rocket::ignite().mount("/", routes![index]).launch();
+// 0.5
+#[rocket::main]
+async fn main() {
+    let conn = SqlitePool::connect("sqlite:../database.sqlite")
+        .await
+        .unwrap();
+
+    database::init_db(&conn).await;
+
+    rocket::build()
+        .manage(conn)
+        .mount("/", routes![index])
+        .mount("/user", controller::routes())
+        .launch()
+        .await
+        .unwrap();
 }
